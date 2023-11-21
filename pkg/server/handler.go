@@ -1,7 +1,7 @@
 package server
 
 import (
-	rpc "buf.build/gen/go/k8sgpt-ai/k8sgpt/grpc/go/schema/v1/schemav1grpc"
+	rpc "github.com/sbadla1/k8sgpt-schemas/protobuf/proto/go-server/schema/v1"
 )
 
 type handler struct {
