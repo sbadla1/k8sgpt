@@ -1,11 +1,12 @@
 package server
 
 import (
-	schemav1 "buf.build/gen/go/k8sgpt-ai/k8sgpt/protocolbuffers/go/schema/v1"
 	"context"
 	"fmt"
+
 	"github.com/k8sgpt-ai/k8sgpt/pkg/analyzer"
 	"github.com/k8sgpt-ai/k8sgpt/pkg/integration"
+	schemav1 "github.com/sbadla1/k8sgpt-schemas/protobuf/proto/go-server/schema/v1"
 	"github.com/spf13/viper"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"

@@ -14,17 +14,20 @@ limitations under the License.
 package server
 
 import (
+	"context"
 	json "encoding/json"
 	"errors"
 	"fmt"
+	"log"
 	"net"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
 
-	rpc "buf.build/gen/go/k8sgpt-ai/k8sgpt/grpc/go/schema/v1/schemav1grpc"
+	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
+	rpc "github.com/sbadla1/k8sgpt-schemas/protobuf/proto/go-server/schema/v1"
 	"go.uber.org/zap"
 
 	"google.golang.org/grpc"
@@ -73,6 +76,22 @@ func (s *Config) Serve() error {
 	if err := grpcServer.Serve(
 		lis,
 	); err != nil && !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+
+	// gRPC gw setup
+	mux := runtime.NewServeMux()
+	// Register Greeter
+	err = rpc.RegisterServerServiceHandlerFromEndpoint(context.Background(), mux, "localhost:8082", []grpc.DialOption{grpc.WithInsecure()})
+	if err != nil {
+		log.Fatalln("Failed to register gateway:", err)
+	}
+
+	gwServer := &http.Server{
+		Handler: mux,
+	}
+
+	if err := gwServer.ListenAndServe(); err != nil {
 		return err
 	}
 

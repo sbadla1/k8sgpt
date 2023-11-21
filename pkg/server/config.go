@@ -3,8 +3,8 @@ package server
 import (
 	"context"
 
-	schemav1 "buf.build/gen/go/k8sgpt-ai/k8sgpt/protocolbuffers/go/schema/v1"
 	"github.com/k8sgpt-ai/k8sgpt/pkg/cache"
+	schemav1 "github.com/sbadla1/k8sgpt-schemas/protobuf/proto/go-server/schema/v1"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
