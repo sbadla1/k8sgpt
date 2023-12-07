@@ -73,22 +73,22 @@ func (s *Config) Serve() error {
 	grpcServer := grpc.NewServer(grpcServerUnaryInterceptor)
 	reflection.Register(grpcServer)
 	rpc.RegisterServerServiceServer(grpcServer, s.Handler)
-	if err := grpcServer.Serve(
-		lis,
-	); err != nil && !errors.Is(err, http.ErrServerClosed) {
-		return err
-	}
+
+	go func() {
+		log.Fatalln(grpcServer.Serve(lis))
+	}()
 
 	// gRPC gw setup
 	mux := runtime.NewServeMux()
 	// Register Greeter
-	err = rpc.RegisterServerServiceHandlerFromEndpoint(context.Background(), mux, "localhost:8082", []grpc.DialOption{grpc.WithInsecure()})
+	err = rpc.RegisterServerServiceHandlerFromEndpoint(context.Background(), mux, "localhost:8080", []grpc.DialOption{grpc.WithInsecure()})
 	if err != nil {
 		log.Fatalln("Failed to register gateway:", err)
 	}
 
 	gwServer := &http.Server{
 		Handler: mux,
+		Addr:    "localhost:8082",
 	}
 
 	if err := gwServer.ListenAndServe(); err != nil {
