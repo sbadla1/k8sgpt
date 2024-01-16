@@ -50,6 +50,7 @@ var additionalAnalyzerMap = map[string]common.IAnalyzer{
 	"PodDisruptionBudget":     PdbAnalyzer{},
 	"NetworkPolicy":           NetworkPolicyAnalyzer{},
 	"Log":                     LogAnalyzer{},
+	"Splunk":                  SplunkAnalyzer{},
 	"GatewayClass":            GatewayClassAnalyzer{},
 	"Gateway":                 GatewayAnalyzer{},
 	"HTTPRoute":               HTTPRouteAnalyzer{},
